@@ -1,8 +1,10 @@
 "use strict";
 
 const inquirer = require("inquirer");
-const { connect, disconnect } = require("./server");
-const { node, lokasi, sensing } = require("./controller");
+const { connect, disconnect, insertData } = require("./server");
+const { node } = require("./controller");
+
+const dataXbee = "NODE1|10.00|10.00|11.25|LokasiB";
 
 const mainMenu = () => {
   console.log("============================");
@@ -39,11 +41,12 @@ const pilihanMenu = () => {
     .then((answer) => {
       try {
         if (answer.pilihan == "1") {
-          if (connecting) console.log("Sudah terkonek di port : 8000");
+          if (connecting) console.log("Sudah terhubung di port : 8000");
           else {
             connecting = true;
             console.log("Sensing berhasil dinyalakan");
             connect();
+            insertData(dataXbee, connecting);
           }
           setTimeout(() => {
             mainMenu();
@@ -69,6 +72,8 @@ const pilihanMenu = () => {
               if (answer.manage == 1) {
                 node.insertNode("Rafi");
                 console.log("Berhasil tambah node Rafi");
+                mainMenu();
+                return pilihanMenu();
               } else {
                 setTimeout(() => {
                   mainMenu();

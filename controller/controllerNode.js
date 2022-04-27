@@ -8,8 +8,12 @@ module.exports = {
     });
   },
 
-  //Find node by ID
-  //   findNodeByID(){
-  //       NodeSensor.findByID({})
-  //   }
+  // Find node by Name
+  findNodeByName(nama) {
+    NodeSensor.findOne({
+      where: {
+        namaNode: nama,
+      },
+    });
+  },
 };

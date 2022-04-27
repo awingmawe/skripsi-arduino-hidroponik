@@ -7,4 +7,12 @@ module.exports = {
       namaLokasi: namaLokasi,
     });
   },
+  // Find lokasi by name
+  findLokasiByName(nama) {
+    Lokasi.findOne({
+      where: {
+        namaLokasi: nama,
+      },
+    });
+  },
 };
