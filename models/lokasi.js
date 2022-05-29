@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       Lokasi.hasMany(models.Sensing, {
         foreignKey: "idLokasi",
       });
+      // models.Sensing.belongsTo(Lokasi);
     }
   }
   Lokasi.init(

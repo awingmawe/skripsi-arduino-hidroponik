@@ -29,11 +29,34 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        get: function () {
+          return this.getDataValue("createdAt").toLocaleString("id-ID", {
+            timezone: "WIB",
+          });
+        },
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
       },
+    });
+    await queryInterface.addConstraint("Sensings", {
+      fields: ["idNode"],
+      type: "foreign key",
+      references: {
+        table: "NodeSensors",
+        field: "id",
+      },
+      onDelete: "CASCADE",
+    });
+    await queryInterface.addConstraint("Sensings", {
+      fields: ["idLokasi"],
+      type: "foreign key",
+      references: {
+        table: "Lokasis",
+        field: "id",
+      },
+      onDelete: "CASCADE",
     });
   },
   async down(queryInterface, Sequelize) {

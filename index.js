@@ -4,7 +4,10 @@ const inquirer = require("inquirer");
 const { connect, disconnect, insertData } = require("./server");
 const { node } = require("./controller");
 
-const dataXbee = "NODE1|10.00|10.00|11.25|LokasiB";
+const dataXbee = [
+  "NODE1|10.00|10.00|11.25|LokasiB",
+  "NODE2|10.00|10.00|11.25|LokasiA",
+];
 
 const mainMenu = () => {
   console.log("============================");
@@ -46,7 +49,9 @@ const pilihanMenu = () => {
             connecting = true;
             console.log("Sensing berhasil dinyalakan");
             connect();
+            // setInterval(() => {
             insertData(dataXbee, connecting);
+            // }, 2000);
           }
           setTimeout(() => {
             mainMenu();

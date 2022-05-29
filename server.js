@@ -1,11 +1,11 @@
 const express = require("express");
 const flash = require("express-flash");
-const { Sequelize } = require("sequelize");
+const { Sequelize, QueryTypes } = require("sequelize");
 const config = require("./config/config.json");
 const { insertLokasi } = require("./controller/controllerLokasi");
 const { insertNode } = require("./controller/controllerNode");
-const { insertSensing } = require("./controller/controllerSensing");
-const { NodeSensor, Lokasi } = require("./models");
+const { insertSensing, getSensing } = require("./controller/controllerSensing");
+const { NodeSensor, Lokasi, sequelize } = require("./models");
 const { routerSensing } = require("./router");
 const cors = require("cors");
 const app = express();
@@ -26,10 +26,11 @@ const db = new Sequelize(
     host: config.development.host,
     dialect: config.development.dialect,
     port: 7000,
-    logging: false,
+    logging: config.development.logging,
   }
 );
 
+// Endpoint untuk digunakan di website
 app.use("/sensing", routerSensing);
 
 module.exports = {
@@ -47,13 +48,12 @@ module.exports = {
         });
     });
   },
-  insertData(data, status) {
-    setInterval(() => {
+  insertData(node, status) {
+    node.map((data) => {
       const dataSensing = data.split("|");
       const dataConvert = dataSensing;
       const nodeName = dataConvert[0];
       const lokasiName = dataConvert[4];
-      console.log("Nama Node : " + nodeName + "\nNama Lokasi : " + lokasiName);
       NodeSensor.findOne({
         where: {
           namaNode: nodeName,
@@ -81,7 +81,7 @@ module.exports = {
         };
         insertSensing(dataSensing);
       });
-    }, 2000);
+    });
   },
   disconnect() {
     process.exit();

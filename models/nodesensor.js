@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       NodeSensor.hasMany(models.Sensing, {
         foreignKey: "idNode",
       });
+      // models.Sensing.belongsTo(NodeSensor);
     }
   }
   NodeSensor.init(
