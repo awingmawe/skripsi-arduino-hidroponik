@@ -5,7 +5,8 @@
     "database": "arduino",
     "host": "127.0.0.1",
     "dialect": "postgres",
-    "port" : 7000
+    "port" : 7000,
+    "logging" :false
   },
   "test": {
     "username": "root",

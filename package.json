@@ -10,8 +10,10 @@
   "author": "moch-rafi",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.3",
     "express-flash": "^0.0.2",
+    "http-proxy-middleware": "^2.0.6",
     "inquirer": "^8.2.2",
     "nodemon": "^2.0.15",
     "pg": "^8.7.3",
