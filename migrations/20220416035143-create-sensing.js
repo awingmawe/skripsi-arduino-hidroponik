@@ -28,16 +28,11 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-        get: function () {
-          return this.getDataValue("createdAt").toLocaleString("id-ID", {
-            timezone: "WIB",
-          });
-        },
+        type: "TIMESTAMP",
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: "TIMESTAMP",
       },
     });
     await queryInterface.addConstraint("Sensings", {

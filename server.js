@@ -70,16 +70,19 @@ module.exports = {
         if (!lokasi && lokasi == null) {
           insertLokasi(lokasiName);
         }
-        const idNodes = ret.id;
-        const idLocation = lokasi.id;
-        const dataSensing = {
-          idNode: idNodes,
-          idLokasi: idLocation,
-          phAir: dataConvert[1],
-          humidity: dataConvert[2],
-          suhuAir: dataConvert[3],
-        };
-        insertSensing(dataSensing);
+        setTimeout(() => {
+          console.log(lokasi);
+          const idNodes = ret.id;
+          const idLocation = lokasi.id;
+          const dataSensing = {
+            idNode: idNodes,
+            idLokasi: idLocation,
+            phAir: dataConvert[1],
+            humidity: dataConvert[2],
+            suhuAir: dataConvert[3],
+          };
+          insertSensing(dataSensing);
+        }, 2000);
       });
     });
   },

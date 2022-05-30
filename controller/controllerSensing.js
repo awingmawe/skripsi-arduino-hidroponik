@@ -70,6 +70,26 @@ module.exports = {
     });
   },
 
+  // realtime data ph air
+  getSensingPhAir(req, res) {
+    sequelize
+      .query(
+        `select DISTINCT ON ("namaNode") 
+          c.id, 
+          "namaNode", 
+          "namaLokasi",
+          "phAir",
+          c."createdAt"
+        from "Sensings" as c 
+        inner join "NodeSensors" as n on c."idNode" = n.id 
+        inner join "Lokasis" as l on c."idLokasi" = n.id
+        order by "namaNode", c."createdAt" DESC`
+      )
+      .then((data) => {
+        res.status(200).json(data[0]);
+      });
+  },
+
   // Kirim data sensing Suhu Air
   getSuhuAir(req, res) {
     Sensing.findAll({
@@ -87,6 +107,26 @@ module.exports = {
     });
   },
 
+  // realtime data ph air
+  getSensingSuhuAir(req, res) {
+    sequelize
+      .query(
+        `select DISTINCT ON ("namaNode") 
+          c.id, 
+          "namaNode", 
+          "namaLokasi",
+          "suhuAir",
+          c."createdAt"
+        from "Sensings" as c 
+        inner join "NodeSensors" as n on c."idNode" = n.id 
+        inner join "Lokasis" as l on c."idLokasi" = n.id
+        order by "namaNode", c."createdAt" DESC`
+      )
+      .then((data) => {
+        res.status(200).json(data[0]);
+      });
+  },
+
   // Kirim data sensing Humidity
   getHumidity(req, res) {
     Sensing.findAll({
@@ -102,5 +142,25 @@ module.exports = {
     }).then((data) => {
       res.status(200).json(data);
     });
+  },
+
+  // realtime data ph air
+  getSensingHumidity(req, res) {
+    sequelize
+      .query(
+        `select DISTINCT ON ("namaNode") 
+          c.id, 
+          "namaNode", 
+          "namaLokasi",
+          "humidity",
+          c."createdAt"
+        from "Sensings" as c 
+        inner join "NodeSensors" as n on c."idNode" = n.id 
+        inner join "Lokasis" as l on c."idLokasi" = n.id
+        order by "namaNode", c."createdAt" DESC`
+      )
+      .then((data) => {
+        res.status(200).json(data[0]);
+      });
   },
 };
