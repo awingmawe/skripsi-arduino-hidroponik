@@ -49,17 +49,17 @@ module.exports = {
         });
     });
   },
-  insertData(node, status) {
-    node.map((data) => {
-      const dataSensing = data.split("|");
-      const dataConvert = dataSensing;
-      const nodeName = dataConvert[0];
-      const lokasiName = dataConvert[6];
-      NodeSensor.findOne({
-        where: {
-          namaNode: nodeName,
-        },
-      }).then(async (ret) => {
+  insertData(data, status) {
+    const dataSensing = data.split("|");
+    const dataConvert = dataSensing;
+    const nodeName = dataConvert[0];
+    const lokasiName = dataConvert[1];
+    NodeSensor.findOne({
+      where: {
+        namaNode: nodeName,
+      },
+    })
+      .then(async (ret) => {
         if (!ret && ret == null) {
           insertNode(nodeName);
         }
@@ -71,22 +71,25 @@ module.exports = {
         if (!lokasi && lokasi == null) {
           insertLokasi(lokasiName);
         }
+        console.log(ret);
         setTimeout(() => {
           const idNodes = ret.id;
           const idLocation = lokasi.id;
           const dataSensing = {
             idNode: idNodes,
             idLokasi: idLocation,
-            phAir: dataConvert[1],
-            humidity: dataConvert[2],
+            phAir: dataConvert[4],
+            humidity: dataConvert[5],
             suhuAir: dataConvert[3],
-            kelarutan: dataConvert[4],
-            suhuUdara: dataConvert[5],
+            kelarutan: dataConvert[6],
+            suhuUdara: dataConvert[2],
           };
           insertSensing(dataSensing);
         }, 2000);
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    });
   },
   disconnect() {
     process.exit();

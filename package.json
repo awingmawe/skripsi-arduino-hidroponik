@@ -19,6 +19,8 @@
     "pg": "^8.7.3",
     "prompt-sync": "^4.2.0",
     "sequelize": "^6.19.0",
-    "sequelize-cli": "^6.4.1"
+    "sequelize-cli": "^6.4.1",
+    "serialport": "^10.4.0",
+    "xbee-api": "^0.6.0"
   }
 }
