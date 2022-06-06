@@ -1,11 +1,11 @@
 {
   "development": {
-    "username": "postgres",
+    "username": "pi",
     "password": "flashdfox007",
     "database": "arduino",
     "host": "127.0.0.1",
     "dialect": "postgres",
-    "port" : 7000,
+    "port" : 5432,
     "logging" :false
   },
   "test": {
