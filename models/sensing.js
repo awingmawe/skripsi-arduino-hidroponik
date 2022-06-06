@@ -20,10 +20,11 @@ module.exports = (sequelize, DataTypes) => {
     {
       idNode: DataTypes.INTEGER,
       idLokasi: DataTypes.INTEGER,
+      kelarutan: DataTypes.FLOAT,
       phAir: DataTypes.FLOAT,
+      suhuUdara: DataTypes.FLOAT,
       humidity: DataTypes.FLOAT,
       suhuAir: DataTypes.FLOAT,
-      status: DataTypes.BOOLEAN,
     },
     {
       sequelize,

@@ -16,4 +16,11 @@ module.exports = {
       },
     });
   },
+
+  // Find all node
+  getAllNode(req, res) {
+    NodeSensor.findAll({}).then((data) => {
+      res.status(200).json(data);
+    });
+  },
 };
