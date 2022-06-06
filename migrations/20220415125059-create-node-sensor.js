@@ -11,6 +11,9 @@ module.exports = {
       namaNode: {
         type: Sequelize.STRING,
       },
+      status: {
+        type: Sequelize.BOOLEAN,
+      },
       createdAt: {
         allowNull: false,
         type: "TIMESTAMP",

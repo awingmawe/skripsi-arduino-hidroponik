@@ -14,17 +14,20 @@ module.exports = {
       idLokasi: {
         type: Sequelize.INTEGER,
       },
+      kelarutan: {
+        type: Sequelize.FLOAT,
+      },
       phAir: {
         type: Sequelize.FLOAT,
       },
       suhuAir: {
         type: Sequelize.FLOAT,
       },
-      humidity: {
+      suhuUdara: {
         type: Sequelize.FLOAT,
       },
-      status: {
-        type: Sequelize.BOOLEAN,
+      humidity: {
+        type: Sequelize.FLOAT,
       },
       createdAt: {
         allowNull: false,

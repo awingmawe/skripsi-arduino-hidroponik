@@ -5,17 +5,17 @@ const { connect, disconnect, insertData } = require("./server");
 const { node } = require("./controller");
 
 const dataXbee = [
-  "NODE1|10.00|10.00|11.25|LokasiB",
-  "NODE2|10.00|10.00|11.25|LokasiA",
+  "NODE1|10.00|10.00|11.25|20.00|50|LokasiB",
+  "NODE2|10.00|10.00|11.25|20.00|50|LokasiA",
 ];
 
 const mainMenu = () => {
   console.log("============================");
   console.log("Main Menu :");
   console.log("1. Melakukan sensing");
-  console.log("2. Melihat status node");
-  console.log("3. Manajemen node sensor");
-  console.log("4. Berhenti melakukan sensing");
+  console.log("2. Manajemen node sensor");
+  console.log("3. Berhenti melakukan sensing");
+  console.log("4. Keluar aplikasi");
   console.log("============================\n\n");
 };
 
@@ -31,7 +31,7 @@ const manageSensor = () => {
 mainMenu();
 
 var connecting = false;
-
+var sensing = true;
 const pilihanMenu = () => {
   inquirer
     .prompt([
@@ -45,7 +45,7 @@ const pilihanMenu = () => {
       try {
         if (answer.pilihan == "1") {
           if (connecting) console.log("Sudah terhubung di port : 8000");
-          else {
+          else if (sensing) {
             connecting = true;
             console.log("Sensing berhasil dinyalakan");
             connect();
@@ -58,12 +58,6 @@ const pilihanMenu = () => {
             return pilihanMenu();
           }, 2000);
         } else if (answer.pilihan == "2") {
-          console.log("List status node sensor");
-          setTimeout(() => {
-            mainMenu();
-            return pilihanMenu();
-          }, 2000);
-        } else if (answer.pilihan == "3") {
           manageSensor();
           inquirer
             .prompt([
@@ -75,8 +69,6 @@ const pilihanMenu = () => {
             ])
             .then((answer) => {
               if (answer.manage == 1) {
-                node.insertNode("Rafi");
-                console.log("Berhasil tambah node Rafi");
                 mainMenu();
                 return pilihanMenu();
               } else {
@@ -86,8 +78,14 @@ const pilihanMenu = () => {
                 }, 2000);
               }
             });
+        } else if (answer.pilihan == "3") {
+          sensing = false;
+          setTimeout(() => {
+            mainMenu();
+            return pilihanMenu();
+          }, 2000);
         } else {
-          console.log("Berhenti sensing");
+          console.log("Keluar aplikasi");
           setTimeout(() => {
             disconnect();
           }, 2000);

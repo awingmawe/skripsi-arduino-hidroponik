@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
   NodeSensor.init(
     {
       namaNode: DataTypes.STRING,
+      status: DataTypes.BOOLEAN,
     },
     {
       sequelize,

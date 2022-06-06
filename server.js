@@ -6,7 +6,7 @@ const { insertLokasi } = require("./controller/controllerLokasi");
 const { insertNode } = require("./controller/controllerNode");
 const { insertSensing, getSensing } = require("./controller/controllerSensing");
 const { NodeSensor, Lokasi, sequelize } = require("./models");
-const { routerSensing } = require("./router");
+const { routerSensing, routerNode } = require("./router");
 const cors = require("cors");
 const app = express();
 
@@ -32,6 +32,7 @@ const db = new Sequelize(
 
 // Endpoint untuk digunakan di website
 app.use("/sensing", routerSensing);
+app.use("/node", routerNode);
 
 module.exports = {
   connect() {
@@ -53,7 +54,7 @@ module.exports = {
       const dataSensing = data.split("|");
       const dataConvert = dataSensing;
       const nodeName = dataConvert[0];
-      const lokasiName = dataConvert[4];
+      const lokasiName = dataConvert[6];
       NodeSensor.findOne({
         where: {
           namaNode: nodeName,
@@ -71,7 +72,6 @@ module.exports = {
           insertLokasi(lokasiName);
         }
         setTimeout(() => {
-          console.log(lokasi);
           const idNodes = ret.id;
           const idLocation = lokasi.id;
           const dataSensing = {
@@ -80,6 +80,8 @@ module.exports = {
             phAir: dataConvert[1],
             humidity: dataConvert[2],
             suhuAir: dataConvert[3],
+            kelarutan: dataConvert[4],
+            suhuUdara: dataConvert[5],
           };
           insertSensing(dataSensing);
         }, 2000);
