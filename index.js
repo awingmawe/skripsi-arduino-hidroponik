@@ -10,28 +10,28 @@ var SerialPort = require("serialport").SerialPort;
 var xbee_api = require("xbee-api");
 var C = xbee_api.constants;
 
-var xbeeAPI = new xbee_api.XBeeAPI({
-  api_mode: 1,
-});
+// var xbeeAPI = new xbee_api.XBeeAPI({
+//   api_mode: 1,
+// });
 
-var serialport = new SerialPort({
-  path: "/dev/ttyUSB0",
-  baudRate: 9600,
-});
+// var serialport = new SerialPort({
+//   path: "COM4",
+//   baudRate: 9600,
+// });
 
-serialport.pipe(xbeeAPI.parser);
-xbeeAPI.builder.pipe(serialport);
+// serialport.pipe(xbeeAPI.parser);
+// xbeeAPI.builder.pipe(serialport);
 
-serialport.on("open", function () {
-  var frame_obj = {
-    // AT Request to be sent
-    type: C.FRAME_TYPE.AT_COMMAND,
-    command: "NI",
-    commandParameter: [],
-  };
+// serialport.on("open", function () {
+//   var frame_obj = {
+//     // AT Request to be sent
+//     type: C.FRAME_TYPE.AT_COMMAND,
+//     command: "NI",
+//     commandParameter: [],
+//   };
 
-  xbeeAPI.builder.write(frame_obj);
-});
+//   xbeeAPI.builder.write(frame_obj);
+// });
 
 // All frames parsed by the XBee will be emitted here
 
@@ -75,15 +75,16 @@ const pilihanMenu = () => {
             connecting = true;
             console.log("Sensing berhasil dinyalakan");
             connect();
-            xbeeAPI.parser.on("data", function (frame) {
-              const data = decodeURIComponent(escape(frame.data));
-              if (data == "undefined" || data.length == 0) {
-                console.log("Data tidak masuk");
-              } else {
-                console.log(data);
-                insertData(data, connecting);
-              }
-            });
+            // xbeeAPI.parser.on("data", function (frame) {
+            //   console.log(frame);
+            //   const data = decodeURIComponent(escape(frame.data));
+            //   if (data == "undefined" || data.length == 0) {
+            //     console.log("Data tidak masuk");
+            //   } else {
+            //     console.log(data);
+            //     // insertData(data, connecting);
+            //   }
+            // });
           }
           setTimeout(() => {
             mainMenu();
