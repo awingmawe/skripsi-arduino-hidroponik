@@ -25,7 +25,7 @@ const db = new Sequelize(
   {
     host: config.development.host,
     dialect: config.development.dialect,
-    port: 7000,
+    port: 5432,
     logging: false,
   }
 );
