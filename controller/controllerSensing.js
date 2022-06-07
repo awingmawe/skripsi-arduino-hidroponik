@@ -48,7 +48,7 @@ module.exports = {
           c."createdAt"
         from "Sensings" as c 
         inner join "NodeSensors" as n on c."idNode" = n.id 
-        inner join "Lokasis" as l on c."idLokasi" = n.id
+        inner join "Lokasis" as l on c."idLokasi" = l.id
         order by "namaNode", c."createdAt" DESC`
       )
       .then((data) => {
@@ -85,7 +85,7 @@ module.exports = {
           c."createdAt"
         from "Sensings" as c 
         inner join "NodeSensors" as n on c."idNode" = n.id 
-        inner join "Lokasis" as l on c."idLokasi" = n.id
+        inner join "Lokasis" as l on c."idLokasi" = l.id
         order by "namaNode", c."createdAt" DESC`
       )
       .then((data) => {
@@ -122,7 +122,7 @@ module.exports = {
           c."createdAt"
         from "Sensings" as c 
         inner join "NodeSensors" as n on c."idNode" = n.id 
-        inner join "Lokasis" as l on c."idLokasi" = n.id
+        inner join "Lokasis" as l on c."idLokasi" = l.id
         order by "namaNode", c."createdAt" DESC`
       )
       .then((data) => {
@@ -159,7 +159,7 @@ module.exports = {
           c."createdAt"
         from "Sensings" as c 
         inner join "NodeSensors" as n on c."idNode" = n.id 
-        inner join "Lokasis" as l on c."idLokasi" = n.id
+        inner join "Lokasis" as l on c."idLokasi" = l.id
         order by "namaNode", c."createdAt" DESC`
       )
       .then((data) => {
@@ -195,7 +195,7 @@ module.exports = {
           c."createdAt"
         from "Sensings" as c 
         inner join "NodeSensors" as n on c."idNode" = n.id 
-        inner join "Lokasis" as l on c."idLokasi" = n.id
+        inner join "Lokasis" as l on c."idLokasi" = l.id
         order by "namaNode", c."createdAt" DESC`
       )
       .then((data) => {
@@ -230,7 +230,7 @@ module.exports = {
           c."createdAt"
         from "Sensings" as c 
         inner join "NodeSensors" as n on c."idNode" = n.id 
-        inner join "Lokasis" as l on c."idLokasi" = n.id
+        inner join "Lokasis" as l on c."idLokasi" = l.id
         order by "namaNode", c."createdAt" DESC`
       )
       .then((data) => {

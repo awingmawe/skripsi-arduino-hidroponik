@@ -34,12 +34,6 @@ serialport.on("open", function () {
 });
 
 // All frames parsed by the XBee will be emitted here
-xbeeAPI.parser.on("data", function (frame) {
-  const data = decodeURIComponent(escape(frame.data));
-  console.log(data);
-  // console.log(decodeURIComponent(escape(frame.data)));
-  // console.log(">>", frame);
-});
 
 const mainMenu = () => {
   console.log("============================");
@@ -81,9 +75,14 @@ const pilihanMenu = () => {
             connecting = true;
             console.log("Sensing berhasil dinyalakan");
             connect();
-            // setInterval(() => {
-            insertData(dataXbee, connecting);
-            // }, 2000);
+            xbeeAPI.parser.on("data", function (frame) {
+              const data = decodeURIComponent(escape(frame.data));
+              if (data == "undefined" || data.length == 0) {
+                console.log("Data tidak masuk");
+              } else {
+                insertData(data, connecting);
+              }
+            });
           }
           setTimeout(() => {
             mainMenu();

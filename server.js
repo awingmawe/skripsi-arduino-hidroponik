@@ -25,8 +25,8 @@ const db = new Sequelize(
   {
     host: config.development.host,
     dialect: config.development.dialect,
-    port: 5432,
-    logging: config.development.logging,
+    port: 7000,
+    logging: false,
   }
 );
 
@@ -51,6 +51,7 @@ module.exports = {
   },
   insertData(data, status) {
     const dataSensing = data.split("|");
+    console.log(data);
     const dataConvert = dataSensing;
     const nodeName = dataConvert[0];
     const lokasiName = dataConvert[1];
@@ -67,11 +68,12 @@ module.exports = {
           where: {
             namaLokasi: lokasiName,
           },
+        }).catch((err) => {
+          console.log(err);
         });
         if (!lokasi && lokasi == null) {
           insertLokasi(lokasiName);
         }
-        console.log(ret);
         setTimeout(() => {
           const idNodes = ret.id;
           const idLocation = lokasi.id;
