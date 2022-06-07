@@ -15,7 +15,7 @@ var xbeeAPI = new xbee_api.XBeeAPI({
 });
 
 var serialport = new SerialPort({
-  path: "COM4",
+  path: "ttyUSB0",
   baudRate: 9600,
 });
 
