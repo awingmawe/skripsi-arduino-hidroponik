@@ -1,6 +1,6 @@
 {
   "development": {
-    "username": "p",
+    "username": "pi",
     "password": "flashdfox007",
     "database": "arduino",
     "host": "127.0.0.1",
