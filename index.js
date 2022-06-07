@@ -80,6 +80,7 @@ const pilihanMenu = () => {
               if (data == "undefined" || data.length == 0) {
                 console.log("Data tidak masuk");
               } else {
+                console.log(data);
                 insertData(data, connecting);
               }
             });
