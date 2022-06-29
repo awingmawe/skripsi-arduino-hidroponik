@@ -2,9 +2,6 @@
 
 const inquirer = require("inquirer");
 const { connect, disconnect, insertData } = require("./server");
-const { node } = require("./controller");
-
-const dataXbee = [];
 
 var SerialPort = require("serialport").SerialPort;
 var xbee_api = require("xbee-api");
@@ -16,48 +13,52 @@ var xbeeAPI = new xbee_api.XBeeAPI({
 
 var serialport = new SerialPort({
   path: "/dev/ttyUSB0",
+  // path: "COM4",
   baudRate: 9600,
 });
 
 serialport.pipe(xbeeAPI.parser);
 xbeeAPI.builder.pipe(serialport);
 
+// All frames parsed by the XBee will be emitted here
 serialport.on("open", function () {
-  var frame_obj = {
+  var saluranAir = {
     // AT Request to be sent
-    type: C.FRAME_TYPE.AT_COMMAND,
-    command: "NI",
-    commandParameter: [],
+    type: C.FRAME_TYPE.ZIGBEE_TRANSMIT_REQUEST,
+    destination64: "0013a20041dd3e53", // node saluran air
+    data: "mulai",
   };
-
-  xbeeAPI.builder.write(frame_obj);
+  var penampunganAir = {
+    type: C.FRAME_TYPE.ZIGBEE_TRANSMIT_REQUEST,
+    destination64: "0013a20041dd3d88", // node penampungan air
+    data: "mulai",
+  };
+  xbeeAPI.builder.write(saluranAir);
+  xbeeAPI.builder.write(penampunganAir);
 });
 
-// All frames parsed by the XBee will be emitted here
+// serialport.on("open", () => {
+//   var penampunganAir = {
+//     type: C.FRAME_TYPE.ZIGBEE_TRANSMIT_REQUEST,
+//     destination64: "0013a20041dd3d88", // node penampungan air
+//     data: perintah,
+//   };
+// });
 
 const mainMenu = () => {
   console.log("============================");
   console.log("Main Menu :");
-  console.log("1. Melakukan sensing");
-  console.log("2. Manajemen node sensor");
-  console.log("3. Berhenti melakukan sensing");
-  console.log("4. Keluar aplikasi");
+  console.log("1. Mulai sensing");
+  console.log("2. Berhenti melakukan sensing");
+  console.log("3. Keluar aplikasi");
   console.log("============================\n\n");
-};
-
-const manageSensor = () => {
-  console.log("=============");
-  console.log("1. Tambah node sensor");
-  console.log("2. Edit node sensor");
-  console.log("3. Hapus node sensor");
-  console.log("4. Kembali");
-  console.log("=============\n\n");
 };
 
 mainMenu();
 
 var connecting = false;
 var sensing = true;
+
 const pilihanMenu = () => {
   inquirer
     .prompt([
@@ -70,19 +71,21 @@ const pilihanMenu = () => {
     .then((answer) => {
       try {
         if (answer.pilihan == "1") {
+          sensing = true;
           if (connecting) console.log("Sudah terhubung di port : 8000");
-          else if (sensing) {
+          else connect();
+          if (sensing) {
             connecting = true;
             console.log("Sensing berhasil dinyalakan");
-            connect();
+
             xbeeAPI.parser.on("data", function (frame) {
-              console.log(frame);
+              // console.log(frame);
               const data = decodeURIComponent(escape(frame.data));
               if (data == "undefined" || data.length == 0) {
                 console.log("Data tidak masuk");
               } else {
-                console.log(data);
-                insertData(data, connecting);
+                // console.log(data);
+                insertData(data, sensing);
               }
             });
           }
@@ -91,28 +94,12 @@ const pilihanMenu = () => {
             return pilihanMenu();
           }, 2000);
         } else if (answer.pilihan == "2") {
-          manageSensor();
-          inquirer
-            .prompt([
-              {
-                name: "manage",
-                type: "input",
-                message: "Masukan pilihan",
-              },
-            ])
-            .then((answer) => {
-              if (answer.manage == 1) {
-                mainMenu();
-                return pilihanMenu();
-              } else {
-                setTimeout(() => {
-                  mainMenu();
-                  return pilihanMenu();
-                }, 2000);
-              }
-            });
-        } else if (answer.pilihan == "3") {
           sensing = false;
+          console.log("Sensing Berhenti");
+          serialport.on("open", function () {
+            xbeeAPI.builder.write(saluranAir("berhenti"));
+            xbeeAPI.builder.write(penampunganAir("berhenti"));
+          });
           setTimeout(() => {
             mainMenu();
             return pilihanMenu();

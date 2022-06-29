@@ -13,5 +13,6 @@ router.get("/suhuUdara", controllerSensing.getSuhuUdara);
 router.get("/real-time-suhuUdara", controllerSensing.getSensingSuhuUdara);
 router.get("/kelarutan", controllerSensing.getKelarutan);
 router.get("/real-time-kelarutan", controllerSensing.getSensingKelarutan);
+router.post("/riwayat", controllerSensing.postHistory);
 
 module.exports = router;

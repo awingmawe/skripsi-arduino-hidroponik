@@ -1,11 +1,11 @@
 const express = require("express");
 const flash = require("express-flash");
-const { Sequelize, QueryTypes } = require("sequelize");
+const { Sequelize } = require("sequelize");
 const config = require("./config/config.json");
 const { insertLokasi } = require("./controller/controllerLokasi");
 const { insertNode } = require("./controller/controllerNode");
-const { insertSensing, getSensing } = require("./controller/controllerSensing");
-const { NodeSensor, Lokasi, sequelize } = require("./models");
+const { insertSensing } = require("./controller/controllerSensing");
+const { NodeSensor, Lokasi } = require("./models");
 const { routerSensing, routerNode } = require("./router");
 const cors = require("cors");
 const app = express();
@@ -50,48 +50,49 @@ module.exports = {
     });
   },
   insertData(data, status) {
-    const dataSensing = data.split("|");
-    console.log(data);
-    const dataConvert = dataSensing;
-    const nodeName = dataConvert[0];
-    const lokasiName = dataConvert[1];
-    NodeSensor.findOne({
-      where: {
-        namaNode: nodeName,
-      },
-    })
-      .then(async (ret) => {
-        if (!ret && ret == null) {
-          insertNode(nodeName);
-        }
-        const lokasi = await Lokasi.findOne({
-          where: {
-            namaLokasi: lokasiName,
-          },
-        }).catch((err) => {
+    if (status) {
+      const dataSensing = data.split("|");
+      const dataConvert = dataSensing;
+      const nodeName = dataConvert[0];
+      const lokasiName = dataConvert[1];
+      NodeSensor.findOne({
+        where: {
+          namaNode: nodeName,
+        },
+      })
+        .then(async (ret) => {
+          if (!ret && ret == null) {
+            insertNode(nodeName);
+          }
+          const lokasi = await Lokasi.findOne({
+            where: {
+              namaLokasi: lokasiName,
+            },
+          }).catch((err) => {
+            console.log(err);
+          });
+          if (!lokasi && lokasi == null) {
+            insertLokasi(lokasiName);
+          }
+          setTimeout(() => {
+            const idNodes = ret.id;
+            const idLocation = lokasi.id;
+            const dataSensing = {
+              idNode: idNodes,
+              idLokasi: idLocation,
+              phAir: dataConvert[4],
+              humidity: dataConvert[5],
+              suhuAir: dataConvert[3],
+              kelarutan: dataConvert[6],
+              suhuUdara: dataConvert[2],
+            };
+            insertSensing(dataSensing);
+          }, 2000);
+        })
+        .catch((err) => {
           console.log(err);
         });
-        if (!lokasi && lokasi == null) {
-          insertLokasi(lokasiName);
-        }
-        setTimeout(() => {
-          const idNodes = ret.id;
-          const idLocation = lokasi.id;
-          const dataSensing = {
-            idNode: idNodes,
-            idLokasi: idLocation,
-            phAir: dataConvert[4],
-            humidity: dataConvert[5],
-            suhuAir: dataConvert[3],
-            kelarutan: dataConvert[6],
-            suhuUdara: dataConvert[2],
-          };
-          insertSensing(dataSensing);
-        }, 2000);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }
   },
   disconnect() {
     process.exit();

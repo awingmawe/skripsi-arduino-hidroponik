@@ -5,6 +5,7 @@ module.exports = {
   insertNode(data) {
     NodeSensor.create({
       namaNode: data,
+      status: true,
     });
   },
 
@@ -14,6 +15,12 @@ module.exports = {
       where: {
         namaNode: nama,
       },
+    }).then((e) => {
+      if (e) {
+        console.log(`Node ${nama} sudah ada!`);
+      } else {
+        console.log(`Berhasil menambahkan Node ${nama}`);
+      }
     });
   },
 

@@ -13,6 +13,12 @@ module.exports = {
       where: {
         namaLokasi: nama,
       },
+    }).then((e) => {
+      if (e) {
+        console.log(`Nama lokasi ${nama} sudah ada!`);
+      } else {
+        console.log(`Berhasil menambahkan lokasi ${nama}`);
+      }
     });
   },
 };

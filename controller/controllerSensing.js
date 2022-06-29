@@ -1,5 +1,5 @@
 const { Sensing, Lokasi, NodeSensor, sequelize } = require("../models");
-
+const { Op } = require("sequelize");
 module.exports = {
   // Insert data sensing ke database
   insertSensing(data) {
@@ -235,6 +235,63 @@ module.exports = {
       )
       .then((data) => {
         res.status(200).json(data[0]);
+      });
+  },
+
+  // history
+  postHistory(req, res) {
+    const {
+      phAir,
+      suhuAir,
+      suhuUdara,
+      humidity,
+      kelarutan,
+      waktuAwal,
+      waktuTarget,
+    } = req.body.data;
+    console.log(req.body);
+    console.log(phAir);
+    let arrAttribute = new Array();
+    for (let i = 0; i < 5; i++) {
+      if (phAir && !arrAttribute.includes("phAir")) {
+        arrAttribute.push("phAir");
+      }
+      if (suhuAir && !arrAttribute.includes("suhuAir")) {
+        arrAttribute.push("suhuAir");
+      }
+      if (suhuUdara && !arrAttribute.includes("suhuUdara")) {
+        arrAttribute.push("suhuUdara");
+      }
+      if (humidity && !arrAttribute.includes("humidity")) {
+        arrAttribute.push("humidity");
+      }
+      if (kelarutan && !arrAttribute.includes("kelarutan")) {
+        arrAttribute.push("kelarutan");
+      }
+    }
+    arrAttribute.push("createdAt");
+    Sensing.findAll({
+      include: [
+        {
+          model: Lokasi,
+        },
+        {
+          model: NodeSensor,
+        },
+      ],
+      attributes: arrAttribute,
+      where: {
+        createdAt: {
+          [Op.between]: [waktuAwal, waktuTarget],
+        },
+      },
+    })
+      .then((e) => {
+        console.log(e);
+        res.status(200).json(e);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   },
 };
