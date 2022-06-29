@@ -79,12 +79,12 @@ const pilihanMenu = () => {
             console.log("Sensing berhasil dinyalakan");
 
             xbeeAPI.parser.on("data", function (frame) {
-              // console.log(frame);
+              console.log(frame);
               const data = decodeURIComponent(escape(frame.data));
               if (data == "undefined" || data.length == 0) {
                 console.log("Data tidak masuk");
               } else {
-                // console.log(data);
+                console.log(data);
                 insertData(data, sensing);
               }
             });
